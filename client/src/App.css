@@ -1,0 +1,14 @@
+*{
+  margin-bottom: 25px;
+}
+
+.getWeatherData {
+  display: flex;
+  align-items:center;
+  justify-content: start;
+  border: 0px solid red;
+}
+
+.getWeatherData * {
+  margin-right: 5px;
+}
