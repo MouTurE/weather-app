@@ -41,13 +41,23 @@ function App() {
 
       console.log(processedData);
       setWeatherData(processedData);
+
+      const exists = weatherDataList.some(item => item.location === processedData.location);
+      
+      if (exists) {
+        setDebugLine("Fetching Successful!");
+        return;
+      }
+        
+      
       axios.post("http://localhost:3001/weathers", processedData);
-      setWeatherDataList([...weatherDataList,processedData])
+
+      setWeatherDataList(prev => [...prev, processedData]);
 
       setDebugLine("Fetching Successful!");
     }
     catch (error) {
-     
+     setDebugLine(error.message);
     }
   }
 
@@ -65,17 +75,19 @@ function App() {
     <div className="App">
       <h1>Weather App</h1>
       
+
       <div className='getWeatherData'>
         <input ref={inputRef} type='text' placeholder='Enter City...'/>
         <button onClick={() => search(inputRef.current.value)}>Get City Data</button>
       </div>
       <p className='debugLine'> {debugLine} </p>
 
+
       <div className='weatherDisplay'>
-           <p> Location: {weatherData.location} </p>
-           <p> Humidity: {weatherData.humidity} % </p>
-           <p>Wind Speed: {weatherData.windSpeed} Km/h </p>
-           <p> Temperature: {weatherData.temperature} °C</p>
+           <p> <b>Location:</b> {weatherData.location} </p>
+           <p> <b>Humidity:</b> {weatherData != false ? weatherData.humidity + " %" : null}  </p>
+           <p> <b>Wind Speed:</b> {weatherData != false ? weatherData.windSpeed + " Km/h" : null}  </p>
+           <p> <b>Temperature:</b> {weatherData != false ? weatherData.temperature + " °C":null } </p>
       </div>
 
 
@@ -98,9 +110,9 @@ function App() {
                   return(
                     <tr key={key}>
                       <td>{weatherData.location}</td>
-                      <td>{weatherData.temperature}</td>
-                      <td>{weatherData.humidity}</td>
-                      <td>{weatherData.windSpeed}</td>
+                      <td>{weatherData.temperature} °C</td>
+                      <td>{weatherData.humidity} %</td>
+                      <td>{weatherData.windSpeed} Km/h</td>
                     </tr>
                   )
                 }
