@@ -1,22 +1,54 @@
-*{
-  margin-bottom: 25px;
+
+
+
+.App {
+  width: 100dvw;
+  display: flexbox;
+
+  max-width: 500px;
+  margin: auto;
+  
+  background-color: rgba(0, 0, 255, 0.176);
+  padding: 10px;
+  
 }
 
 .getWeatherData {
   display: flex;
-  align-items:center;
-  justify-content: start;
-  border: 0px solid red;
-}
-
-.getWeatherData * {
-  margin-right: 5px;
-}
-
-.weatherDisplay{
-  display: flex;
   flex-direction: column;
   align-items: start;
+  border: 0px solid red;
+  margin-bottom: 50px;
+}
+
+.getWeatherData div {
+  display: flex;
+  align-items:center;
+  justify-content: start;
+  
+}
+
+
+.weatherDisplay {
+ 
+  padding: 10px;
+  display: flex;
   justify-content: space-between;
-  border: 1px solid black;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 2px 2px 10px;
+}
+
+.weatherDisplay div {
+  border: 0px solid red;
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.weatherDisplay img {
+  width:150px;
+  height: 150px;
+  object-fit: cover;
+  
 }

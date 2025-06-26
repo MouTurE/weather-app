@@ -4,16 +4,13 @@ import {useEffect, useState, useRef} from "react";
 
 function App() {
 
-  const inputRef = useRef();
+  const inputRef = useRef(); 
+  const [weatherIconSrc,setWeatherIconSrc] = useState(""); 
   const [debugLine, setDebugLine] = useState(""); 
   const [weatherDataList,setWeatherDataList] = useState([]);
   const [weatherData, setWeatherData] = useState(false);
 
-  // const alIcons = {
-  //   "01d" :clear_icon,
-  //   "01n" : clear_icon,
-  //   "02d" : cloud_icon,
-  // }
+ 
 
   const search = async (city) => {
 
@@ -31,6 +28,10 @@ function App() {
 
       const response = await fetch(url);
       const data = await response.json();
+
+      const iconURL = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`
+      setWeatherIconSrc(iconURL)
+
       const processedData = {
         humidity : data.main.humidity,
         windSpeed : data.wind.speed,
@@ -42,6 +43,10 @@ function App() {
       console.log(processedData);
       setWeatherData(processedData);
 
+
+      
+
+      // Checks for duplicates
       const exists = weatherDataList.some(item => item.location === processedData.location);
       
       if (exists) {
@@ -49,11 +54,9 @@ function App() {
         return;
       }
         
-      
+      // Adds to database
       axios.post("http://localhost:3001/weathers", processedData);
-
       setWeatherDataList(prev => [...prev, processedData]);
-
       setDebugLine("Fetching Successful!");
     }
     catch (error) {
@@ -77,17 +80,23 @@ function App() {
       
 
       <div className='getWeatherData'>
-        <input ref={inputRef} type='text' placeholder='Enter City...'/>
-        <button onClick={() => search(inputRef.current.value)}>Get City Data</button>
+        <div>
+          <input ref={inputRef} type='text' placeholder='Enter City...'/>
+          <button onClick={() => search(inputRef.current.value)}>Get City Data</button>
+        </div>
+        <p className='debugLine'> {debugLine} </p>
       </div>
-      <p className='debugLine'> {debugLine} </p>
 
 
       <div className='weatherDisplay'>
-           <p> <b>Location:</b> {weatherData.location} </p>
-           <p> <b>Humidity:</b> {weatherData != false ? weatherData.humidity + " %" : null}  </p>
-           <p> <b>Wind Speed:</b> {weatherData != false ? weatherData.windSpeed + " Km/h" : null}  </p>
-           <p> <b>Temperature:</b> {weatherData != false ? weatherData.temperature + " °C":null } </p>
+          <div>
+            <p> <b>Location:</b> {weatherData.location} </p>
+            <p> <b>Humidity:</b> {weatherData != false ? weatherData.humidity + " %" : null}  </p>
+            <p> <b>Wind Speed:</b> {weatherData != false ? weatherData.windSpeed + " Km/h" : null}  </p>
+            <p> <b>Temperature:</b> {weatherData != false ? weatherData.temperature + " °C":null } </p>
+          </div>
+          
+          <img style={{display: weatherIconSrc === "" ?  "none" : "block"}} className="weatherIcon" src={weatherIconSrc}></img>
       </div>
 
 
@@ -95,7 +104,7 @@ function App() {
 
      
 
-            <table border={1} cellPadding={5}>
+            <table style={{backgroundColor:"white"}} border={1} cellPadding={5}>
 
               <thead>
                 <tr>
