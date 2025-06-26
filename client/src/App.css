@@ -12,3 +12,11 @@
 .getWeatherData * {
   margin-right: 5px;
 }
+
+.weatherDisplay{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+  border: 1px solid black;
+}
